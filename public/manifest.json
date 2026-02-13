@@ -1,0 +1,21 @@
+{
+  "name": "Community Reporting Tool",
+  "short_name": "JomReport",
+  "description": "Report local issues and improve your community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+       "src": "/icons/icon.svg",
+       "sizes": "192x192 512x512",
+       "type": "image/svg+xml"
+    }
+  ]
+}
