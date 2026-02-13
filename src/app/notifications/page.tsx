@@ -25,6 +25,12 @@ export default async function NotificationsPage() {
     .order("created_at", { ascending: false })
     .limit(50)
 
+  const formattedNotifications = notifications?.map((n: any) => ({
+    ...n,
+    actor: Array.isArray(n.actor) ? n.actor[0] : n.actor,
+    report: Array.isArray(n.report) ? n.report[0] : n.report,
+  }))
+
   if (error) {
     console.error("Error fetching notifications:", error)
     // Handle error (e.g., render empty state or error message)
@@ -36,7 +42,7 @@ export default async function NotificationsPage() {
       <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
         Notifications
       </h1>
-      <NotificationsList notifications={notifications || []} />
+      <NotificationsList notifications={formattedNotifications || []} />
     </div>
   )
 }

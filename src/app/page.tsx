@@ -7,7 +7,7 @@ import { Clock, CheckCircle2, Loader2, LayoutGrid } from "lucide-react"
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { status?: string; q?: string }
+  searchParams: Promise<{ status?: string; q?: string }>
 }) {
   const supabase = await createClient()
   
@@ -16,8 +16,7 @@ export default async function Home({
     .select("*, profiles:creator_id(*), confirmations(count), likes(count), updates(count)")
     .eq("is_hidden", false)
 
-  const status = searchParams?.status || "all"
-  const searchQuery = searchParams?.q || ""
+  const { status = "all", q: searchQuery = "" } = await searchParams
 
   if (status !== "all") {
     query = query.eq("status", status)

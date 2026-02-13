@@ -27,7 +27,7 @@ interface ReportDetailProps {
 
 export function ReportDetail({ report, currentUser, isFollowing: initialIsFollowing, hasConfirmed: initialHasConfirmed, isLiked: initialIsLiked, likesCount: initialLikesCount }: ReportDetailProps) {
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing)
-  const [confirmations, setConfirmations] = useState(report.confirmations?.[0]?.count || 0)
+  const [confirmations, setConfirmations] = useState<number>(report.confirmations?.[0]?.count || 0)
   const [hasConfirmed, setHasConfirmed] = useState(initialHasConfirmed)
   const [updates, setUpdates] = useState(report.updates || [])
   const [newUpdate, setNewUpdate] = useState("")
