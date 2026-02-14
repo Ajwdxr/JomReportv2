@@ -31,7 +31,7 @@ export async function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-md border-slate-200 dark:border-none duration-300">
+    <header className="sticky top-0 z-50 w-full border-b bg-[#0f172a] backdrop-blur-md border-[#1e293b] text-white duration-300">
       <div className="container flex h-16 items-center justify-between mx-auto px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
            <Image src="/jomreport.png" alt="JomReport Logo" width={150} height={40} className="h-8 w-auto dark:invert-0" />
@@ -43,11 +43,11 @@ export async function Navbar() {
             {user ? (
                <div className="flex items-center gap-3">
                    <div className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-[#6366f1] transition-colors">Utama</Link>
-            <Link href="/trending" className="text-sm font-medium hover:text-[#6366f1] transition-colors flex items-center gap-1">
+            <Link href="/" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Utama</Link>
+            <Link href="/trending" className="text-sm font-medium text-white/80 hover:text-white transition-colors flex items-center gap-1">
                 <span className="text-orange-500">🔥</span> Popular
             </Link>
-            <Link href="/about" className="text-sm font-medium hover:text-[#6366f1] transition-colors">Tentang Kami</Link>
+            <Link href="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Tentang Kami</Link>
         </div>
                    <div className="hidden md:block">
                        <UserMenu user={user} />
