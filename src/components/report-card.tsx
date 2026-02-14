@@ -1,6 +1,15 @@
-"use client"
+import * as React from "react"
+//... (keep existing imports)
 
-import Link from "next/link"
+//...
+
+// Inside component
+  const [mounted, setMounted] = React.useState(false)
+
+//...
+
+// Inside JSX for date:
+                                {mounted ? (report.created_at ? format(new Date(report.created_at), "d/M/yyyy") : "N/A") : "Loading..."}
 import Image from "next/image"
 import { format } from "date-fns"
 import { MapPin, Calendar, Tag, ThumbsUp, MessageSquare, MoreVertical, Flag } from "lucide-react"
@@ -29,6 +38,12 @@ interface ReportCardProps {
 
 export function ReportCard({ report }: ReportCardProps) {
   const supabase = createClient()
+
+  const [mounted, setMounted] = React.useState(false)
+  
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleFlag = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -156,7 +171,7 @@ export function ReportCard({ report }: ReportCardProps) {
                         <div className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
                             <span>
-                                {report.created_at ? format(new Date(report.created_at), "d/M/yyyy") : "N/A"}
+                                {mounted ? (report.created_at ? format(new Date(report.created_at), "d/M/yyyy") : "N/A") : "..."}
                             </span>
                         </div>
                     </div>

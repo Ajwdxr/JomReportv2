@@ -10,9 +10,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function BottomNav() {
   const pathname = usePathname()
+  const [mounted, setMounted] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const [userAvatar, setUserAvatar] = useState<string | null>(null)
   const supabase = createClient()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +57,7 @@ export function BottomNav() {
     }
   }, [])
 
+  if (!mounted) return null
   if (pathname === "/login") return null
 
   return (
