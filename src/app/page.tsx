@@ -1,8 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { ReportsFeed } from "@/components/reports-feed"
 import { HomeFilters } from "@/components/home-filters"
-import { Button } from "@/components/ui/button"
-import { Clock, CheckCircle2, Loader2, LayoutGrid } from "lucide-react"
 
 export default async function Home({
   searchParams,
@@ -45,18 +43,23 @@ export default async function Home({
   }
 
   return (
-    <div className="space-y-8 pb-20">
+    <div className="space-y-6 pb-20">
       {/* Hero Section */}
-      <div className="flex flex-col items-center text-center space-y-4 py-8 md:py-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
-          <span className="block text-slate-900 dark:text-white" style={{ color: 'var(--foreground)' }}>Bersama Membina</span>
-          <span className="text-[#6366f1]">Komuniti Sejahtera.</span>
-        </h1>
-        <p className="text-slate-500 dark:text-gray-400 text-lg md:text-xl max-w-[600px]">
-          Dari Komuniti, Untuk Komuniti.
-        </p>
+      <div className="relative flex flex-col items-center text-center space-y-6 pt-8 pb-4 md:pt-12 md:pb-6 px-4">
+        {/* Subtle Background Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="relative">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+            <span className="block text-slate-900 dark:text-white">Bersama Membina</span>
+            <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">Komuniti Sejahtera.</span>
+          </h1>
+          <p className="mt-3 text-slate-500 dark:text-slate-400 text-base sm:text-lg md:text-xl max-w-[500px] mx-auto">
+            Dari Komuniti, Untuk Komuniti.
+          </p>
+        </div>
 
-        {/* Filter Buttons */}
+        {/* Filters */}
         <HomeFilters />
       </div>
 
