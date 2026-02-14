@@ -4,6 +4,8 @@ import { Navbar } from "@/components/navbar";
 import { BottomNav } from "@/components/bottom-nav";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { RegisterSW } from "@/components/pwa/register-sw";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,6 +54,8 @@ export default function RootLayout({
             {children}
           </main>
           <BottomNav />
+          <InstallPrompt />
+          <RegisterSW />
           <Toaster />
         </ThemeProvider>
       </body>
