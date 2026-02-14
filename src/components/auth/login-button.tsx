@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 export function LoginButton() {
   return (
     <Link href="/login">
-      <Button variant="outline" className="border-[#6366f1] text-[#6366f1] hover:bg-[#6366f1] hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-        Masuk
+      <Button className="bg-[#6366f1] text-white hover:bg-[#6366f1]/90 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+        Log Masuk
       </Button>
     </Link>
   )
