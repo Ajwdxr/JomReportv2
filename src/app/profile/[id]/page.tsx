@@ -38,5 +38,15 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const { data: { user } } = await supabase.auth.getUser()
   const isOwnProfile = user?.id === id
 
-  return <ProfileView profile={profile} reports={reports || []} comments={comments || []} isOwnProfile={isOwnProfile} />
+  let isAdmin = false
+  if (user && isOwnProfile) {
+    const { data: currentUserProfile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+    isAdmin = currentUserProfile?.role === "admin"
+  }
+
+  return <ProfileView profile={profile} reports={reports || []} comments={comments || []} isOwnProfile={isOwnProfile} isAdmin={isAdmin} />
 }

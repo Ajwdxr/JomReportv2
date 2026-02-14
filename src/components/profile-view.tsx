@@ -1,7 +1,7 @@
 "use client"
 
 import { format } from "date-fns"
-import { Trophy, MessageSquare, CheckCircle, Calendar, MapPin, User as UserIcon, LogOut } from "lucide-react"
+import { Trophy, MessageSquare, CheckCircle, Calendar, MapPin, User as UserIcon, LogOut, Shield } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -16,6 +16,7 @@ interface ProfileViewProps {
   reports: any[]
   comments: any[]
   isOwnProfile: boolean
+  isAdmin?: boolean
 }
 
 const BADGES_CONFIG: Record<string, { icon: any; color: string; label: string }> = {
@@ -24,7 +25,7 @@ const BADGES_CONFIG: Record<string, { icon: any; color: string; label: string }>
   "Resolver": { icon: CheckCircle, color: "text-green-500", label: "Issue Resolver" },
 }
 
-export function ProfileView({ profile, reports, comments, isOwnProfile }: ProfileViewProps) {
+export function ProfileView({ profile, reports, comments, isOwnProfile, isAdmin }: ProfileViewProps) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -88,10 +89,18 @@ export function ProfileView({ profile, reports, comments, isOwnProfile }: Profil
                 )}
                 
                 {isOwnProfile && (
-                    <Button variant="outline" size="sm" onClick={handleLogout} className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 border-red-200 dark:border-red-900">
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Log Out
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                        {isAdmin && (
+                            <Button variant="outline" size="sm" onClick={() => router.push('/admin')} className="text-orange-500 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30 border-orange-200 dark:border-orange-900">
+                                <Shield className="mr-2 h-4 w-4" />
+                                Admin Dashboard
+                            </Button>
+                        )}
+                        <Button variant="outline" size="sm" onClick={handleLogout} className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 border-red-200 dark:border-red-900">
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Log Out
+                        </Button>
+                    </div>
                 )}
             </div>
           </div>
