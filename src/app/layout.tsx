@@ -27,6 +27,10 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "JomReport",
   },
+  icons: {
+    icon: "/icons/icon.svg",
+    apple: "/icons/icon.svg",
+  },
 };
 
 export const viewport = {
