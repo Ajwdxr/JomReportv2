@@ -4,9 +4,15 @@ import { useEffect } from "react"
 
 export function RegisterSW() {
   useEffect(() => {
-    if ("serviceWorker" in navigator && (window as any).workbox !== undefined) {
-      const wb = (window as any).workbox
-      wb.register()
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered:", registration.scope)
+        })
+        .catch((err) => {
+          console.log("SW registration failed:", err)
+        })
     }
   }, [])
   return null
