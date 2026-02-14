@@ -1,15 +1,7 @@
+"use client"
+
 import * as React from "react"
-//... (keep existing imports)
-
-//...
-
-// Inside component
-  const [mounted, setMounted] = React.useState(false)
-
-//...
-
-// Inside JSX for date:
-                                {mounted ? (report.created_at ? format(new Date(report.created_at), "d/M/yyyy") : "N/A") : "Loading..."}
+import Link from "next/link"
 import Image from "next/image"
 import { format } from "date-fns"
 import { MapPin, Calendar, Tag, ThumbsUp, MessageSquare, MoreVertical, Flag } from "lucide-react"
