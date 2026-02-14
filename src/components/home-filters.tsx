@@ -43,16 +43,16 @@ export function HomeFilters() {
 
     return (
         <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-4">
-             {/* Search Bar */}
-             <div className="relative w-full max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            {/* Search Bar */}
+            <div className="relative w-full max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
                 <Input 
                     placeholder="Cari aduan..." 
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 rounded-full bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800"
+                    className="pl-9 h-12 rounded-full bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800 shadow-sm"
                 />
-             </div>
+            </div>
 
              <Button 
                 onClick={() => setIsOpen(!isOpen)} 

@@ -23,7 +23,7 @@ export default async function Home({
   }
 
   if (searchQuery) {
-    query = query.ilike("title", `%${searchQuery}%`)
+    query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,address.ilike.%${searchQuery}%`)
   }
 
   const { data: reports, error } = await query
