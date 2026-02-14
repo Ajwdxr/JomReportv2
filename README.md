@@ -78,17 +78,23 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## 👮 Admin Access
 
+### Default Admin Login
+
+| Email              | Password   |
+| ------------------ | ---------- |
+| `admin@report.com` | `admin123` |
+
 ### How to Access the Admin Panel
 
-The admin panel is accessed through a **hidden shortcut**:
+There are **3 ways** to access the admin dashboard:
 
-1.  **Double-click** the 🌙/☀️ **theme toggle button** (top-right corner of the navbar).
-2.  This will navigate you to `/admin`.
-3.  You can also navigate directly to `/admin` in your browser URL bar.
+1.  **Profile Page** — Log in as admin, go to **Profile**, tap the 🛡️ **Admin Dashboard** button.
+2.  **Double-click** the 🌙/☀️ **theme toggle button** (top-right corner of the navbar).
+3.  **Direct URL** — Navigate to `/admin` in your browser.
 
 > **Note:** Only users with the `admin` role can view the admin dashboard. Non-admin users will be redirected.
 
-### Setting Up Admin Role
+### Setting Up a New Admin
 
 Admins are managed via the `profiles` table in the database, **not** via Auth metadata.
 
