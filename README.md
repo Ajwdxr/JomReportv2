@@ -43,7 +43,7 @@ A robust, full-stack community issue reporting application built with modern web
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Ajwdxr/JomReportv2.git
 cd jomreportv2
 npm install
 ```
