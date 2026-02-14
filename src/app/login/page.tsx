@@ -69,7 +69,7 @@ export default function LoginPage() {
                     &ldquo;Perubahan bermula daripada kita. Mari bersama-sama menjadikan komuniti kita tempat yang lebih baik dan selamat untuk semua.&rdquo;
                 </p>
                 <footer className="text-sm text-indigo-200 font-semibold">
-                    - Tim JomReport
+                    - Team JomReport
                 </footer>
             </blockquote>
          </div>

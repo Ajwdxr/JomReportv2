@@ -13,7 +13,6 @@ export function EmailLoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [mode, setMode] = useState<"login" | "signup">("login")
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,33 +22,13 @@ export function EmailLoginForm() {
 
     const supabase = createClient()
 
-    if (mode === "login") {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      if (error) {
-        setError(error.message)
-        setIsLoading(false)
-        return
-      }
-    } else {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-        },
-      })
-      if (error) {
-        setError(error.message)
-        setIsLoading(false)
-        return
-      }
-      setError("")
-      setMode("login")
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) {
+      setError(error.message)
       setIsLoading(false)
-      alert("Semak email anda untuk pengesahan akaun!")
       return
     }
 
@@ -106,31 +85,10 @@ export function EmailLoginForm() {
       >
         {isLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
-        ) : mode === "login" ? (
-          "Log Masuk"
         ) : (
-          "Daftar Akaun"
+          "Log Masuk"
         )}
       </Button>
-
-      {/* Toggle mode */}
-      <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-        {mode === "login" ? (
-          <>
-            Belum ada akaun?{" "}
-            <button type="button" onClick={() => { setMode("signup"); setError("") }} className="text-indigo-500 hover:text-indigo-400 font-medium hover:underline">
-              Daftar
-            </button>
-          </>
-        ) : (
-          <>
-            Sudah ada akaun?{" "}
-            <button type="button" onClick={() => { setMode("login"); setError("") }} className="text-indigo-500 hover:text-indigo-400 font-medium hover:underline">
-              Log Masuk
-            </button>
-          </>
-        )}
-      </p>
     </form>
   )
 }
