@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { LayoutGrid, Clock, Loader2, CheckCircle2, Search, Car, Lightbulb, Trash2, ShieldAlert, HelpCircle, X } from "lucide-react"
+import { LayoutGrid, Clock, Loader2, CheckCircle2, Search, Car, Lightbulb, Trash2, ShieldAlert, HelpCircle, SlidersHorizontal, ChevronDown, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useDebounce } from "use-debounce"
 
 const categories = [
-    { value: "all", label: "Semua", icon: LayoutGrid },
+    { value: "all", label: "Semua" },
     { value: "Roads", label: "Jalan", icon: Car },
     { value: "Lighting", label: "Lampu", icon: Lightbulb },
     { value: "Waste", label: "Sampah", icon: Trash2 },
@@ -18,26 +17,27 @@ const categories = [
 ]
 
 const statuses = [
-    { value: "all", label: "Semua", icon: LayoutGrid, gradient: "from-indigo-500 to-violet-500", shadow: "shadow-indigo-500/25" },
-    { value: "open", label: "Baru", icon: Clock, gradient: "from-orange-400 to-amber-500", shadow: "shadow-orange-500/25" },
-    { value: "in_progress", label: "Proses", icon: Loader2, gradient: "from-blue-400 to-cyan-500", shadow: "shadow-blue-500/25" },
-    { value: "closed", label: "Selesai", icon: CheckCircle2, gradient: "from-emerald-400 to-teal-500", shadow: "shadow-emerald-500/25" },
+    { value: "all", label: "Semua", icon: LayoutGrid },
+    { value: "open", label: "Baru", icon: Clock },
+    { value: "in_progress", label: "Proses", icon: Loader2 },
+    { value: "closed", label: "Selesai", icon: CheckCircle2 },
 ]
 
 export function HomeFilters() {
     const router = useRouter()
     const searchParams = useSearchParams()
     
+    const [isOpen, setIsOpen] = useState(false)
     const currentStatus = searchParams.get("status") || "all"
     const currentCategory = searchParams.get("category") || "all"
     const currentSearch = searchParams.get("q") || ""
     const [searchTerm, setSearchTerm] = useState(currentSearch)
     const [debouncedSearch] = useDebounce(searchTerm, 500)
 
-    // Sync URL with Search
+    const activeFilterCount = (currentStatus !== "all" ? 1 : 0) + (currentCategory !== "all" ? 1 : 0)
+
     useEffect(() => {
         if (debouncedSearch === currentSearch) return
-        
         const params = new URLSearchParams(searchParams.toString())
         if (debouncedSearch) {
             params.set("q", debouncedSearch)
@@ -64,94 +64,108 @@ export function HomeFilters() {
         router.push(`/?${params.toString()}`)
     }
 
-    const hasActiveFilters = currentStatus !== "all" || currentCategory !== "all" || currentSearch !== ""
-
     return (
-        <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-5">
-            {/* Search Bar */}
-            <div className="relative w-full max-w-lg group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 blur-sm" />
-                <div className="relative flex items-center">
-                    <Search className="absolute left-4 h-5 w-5 text-slate-400 dark:text-slate-500 z-10 transition-colors group-focus-within:text-indigo-500" />
+        <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-3">
+            {/* Search Bar + Filter Toggle Row */}
+            <div className="flex items-center gap-2 w-full max-w-lg">
+                <div className="relative flex-1">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500 z-10" />
                     <Input 
-                        placeholder="Cari laporan mengikut tajuk, penerangan..." 
+                        placeholder="Cari aduan..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-11 pr-10 h-13 rounded-2xl bg-white dark:bg-slate-900 backdrop-blur-sm border-slate-200 dark:border-slate-700/50 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 text-base placeholder:text-slate-400 dark:placeholder:text-slate-500 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-400 transition-all"
+                        className="pl-10 pr-9 h-11 rounded-xl bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700/50 shadow-sm text-sm"
                     />
                     {searchTerm && (
-                        <button 
-                            onClick={clearSearch}
-                            className="absolute right-3 p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors z-10"
+                        <button onClick={clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 z-10">
+                            <X className="h-3.5 w-3.5 text-slate-400" />
+                        </button>
+                    )}
+                </div>
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={cn(
+                        "relative flex items-center gap-1.5 h-11 px-4 rounded-xl text-sm font-medium transition-all border shadow-sm",
+                        isOpen
+                            ? "bg-indigo-500 text-white border-indigo-500 shadow-indigo-500/25"
+                            : "bg-white dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700"
+                    )}
+                >
+                    <SlidersHorizontal className="h-4 w-4" />
+                    <span className="hidden sm:inline">Tapis</span>
+                    <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", isOpen && "rotate-180")} />
+                    {activeFilterCount > 0 && !isOpen && (
+                        <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center">
+                            {activeFilterCount}
+                        </span>
+                    )}
+                </button>
+            </div>
+
+            {/* Collapsible Filter Panel */}
+            <div className={cn(
+                "w-full overflow-hidden transition-all duration-300 ease-out",
+                isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+            )}>
+                <div className="bg-white/80 dark:bg-slate-800/60 backdrop-blur-lg rounded-2xl border border-slate-200/80 dark:border-slate-700/50 shadow-lg p-4 space-y-4 max-w-lg mx-auto">
+                    {/* Status */}
+                    <div>
+                        <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Status</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {statuses.map(({ value, label, icon: Icon }) => (
+                                <button
+                                    key={value}
+                                    onClick={() => updateParam("status", value)}
+                                    className={cn(
+                                        "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                                        currentStatus === value
+                                            ? "bg-indigo-500 text-white shadow-sm"
+                                            : "bg-slate-100 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600"
+                                    )}
+                                >
+                                    <Icon className="h-3.5 w-3.5" />
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-slate-200/80 dark:border-slate-700/50" />
+
+                    {/* Category */}
+                    <div>
+                        <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Kategori</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {categories.map(({ value, label, icon: Icon }) => (
+                                <button
+                                    key={value}
+                                    onClick={() => updateParam("category", value)}
+                                    className={cn(
+                                        "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                                        currentCategory === value
+                                            ? "bg-indigo-500 text-white shadow-sm"
+                                            : "bg-slate-100 dark:bg-slate-700/60 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600"
+                                    )}
+                                >
+                                    {Icon && <Icon className="h-3.5 w-3.5" />}
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Reset */}
+                    {(currentStatus !== "all" || currentCategory !== "all") && (
+                        <button
+                            onClick={() => router.push("/")}
+                            className="w-full text-center text-xs text-indigo-500 hover:text-indigo-400 font-medium py-1 hover:underline"
                         >
-                            <X className="h-4 w-4 text-slate-400" />
+                            Reset semua filter
                         </button>
                     )}
                 </div>
             </div>
-
-            {/* Category Pills - Always Visible */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
-                {categories.map(({ value, label, icon: Icon }) => (
-                    <button
-                        key={value}
-                        onClick={() => updateParam("category", value)}
-                        className={cn(
-                            "inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95",
-                            currentCategory === value
-                                ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25"
-                                : "bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 shadow-sm border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm"
-                        )}
-                    >
-                        <Icon className="h-3.5 w-3.5" />
-                        {label}
-                    </button>
-                ))}
-            </div>
-
-            {/* Status Filter */}
-            <div className="w-full">
-                <div className="grid grid-cols-4 gap-2 max-w-lg mx-auto">
-                    {statuses.map(({ value, label, icon: Icon, gradient, shadow }) => (
-                        <button
-                            key={value}
-                            onClick={() => updateParam("status", value)}
-                            className={cn(
-                                "flex flex-col items-center gap-1.5 py-3 px-2 rounded-2xl transition-all duration-200 hover:scale-105 active:scale-95",
-                                currentStatus === value
-                                    ? `bg-gradient-to-br ${gradient} text-white shadow-lg ${shadow}`
-                                    : "bg-white/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 shadow-sm border border-slate-200/60 dark:border-slate-700/60"
-                            )}
-                        >
-                            <Icon className={cn("h-5 w-5", currentStatus === value && value === "in_progress" && "animate-spin")} />
-                            <span className="text-xs font-semibold tracking-wide">{label}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Active Filters Indicator */}
-            {hasActiveFilters && (
-                <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
-                    <div className="h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                    <span>
-                        {currentCategory !== "all" && `Kategori: ${categories.find(c => c.value === currentCategory)?.label}`}
-                        {currentCategory !== "all" && currentStatus !== "all" && " • "}
-                        {currentStatus !== "all" && `Status: ${statuses.find(s => s.value === currentStatus)?.label}`}
-                        {(currentCategory !== "all" || currentStatus !== "all") && currentSearch && " • "}
-                        {currentSearch && `Carian: "${currentSearch}"`}
-                    </span>
-                    <button
-                        onClick={() => {
-                            setSearchTerm("")
-                            router.push("/")
-                        }}
-                        className="ml-1 text-indigo-500 hover:text-indigo-400 font-medium hover:underline"
-                    >
-                        Reset
-                    </button>
-                </div>
-            )}
         </div>
     )
 }
