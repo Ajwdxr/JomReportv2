@@ -4,27 +4,33 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Download, X } from "lucide-react"
 
+const DISMISS_KEY = "jomreport_install_dismissed"
+const DISMISS_DAYS = 30 // Don't show again for 30 days after dismiss
+
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [showPrompt, setShowPrompt] = useState(false)
 
   useEffect(() => {
+    // Check if user already dismissed
+    const dismissed = localStorage.getItem(DISMISS_KEY)
+    if (dismissed) {
+      const dismissedAt = new Date(dismissed).getTime()
+      const now = Date.now()
+      const daysSince = (now - dismissedAt) / (1000 * 60 * 60 * 24)
+      if (daysSince < DISMISS_DAYS) return
+    }
+
+    // Already installed as PWA
+    if (window.matchMedia("(display-mode: standalone)").matches) return
+
     const handleBeforeInstallPrompt = (e: any) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault()
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e)
-      // Update UI notify the user they can install the PWA
       setShowPrompt(true)
     }
 
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-       setShowPrompt(false) // App is installed
-       return
-    }
-
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
     }
@@ -32,17 +38,18 @@ export function InstallPrompt() {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return
-
-    // Show the install prompt
     deferredPrompt.prompt()
-
-    // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice
-    console.log(`User response to the install prompt: ${outcome}`)
-
-    // We've used the prompt, and can't use it again, throw it away
+    console.log(`Install prompt: ${outcome}`)
     setDeferredPrompt(null)
     setShowPrompt(false)
+    // If installed, don't show again
+    localStorage.setItem(DISMISS_KEY, new Date().toISOString())
+  }
+
+  const handleDismiss = () => {
+    setShowPrompt(false)
+    localStorage.setItem(DISMISS_KEY, new Date().toISOString())
   }
 
   if (!showPrompt) return null
@@ -62,7 +69,7 @@ export function InstallPrompt() {
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={() => setShowPrompt(false)}
+            onClick={handleDismiss}
             className="h-8 w-8 text-muted-foreground hover:text-slate-900 dark:hover:text-white"
           >
             <X className="h-4 w-4" />
