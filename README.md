@@ -15,8 +15,10 @@ A robust, full-stack community issue reporting application built with modern web
 ### 🔍 Discovery & Organization
 
 - **Search & Filter**:
-  - Real-time search by report title.
-  - Filter by status: **Baru** (New), **Proses** (In Progress), **Selesai** (Done).
+  - Real-time search by report title and description.
+  - Filter by status: **Semua** (All), **Baru** (New), **Proses** (In Progress), **Selesai** (Done).
+  - Filter by category: **Jalan** (Roads), **Lampu** (Lighting), **Sampah** (Waste), **Keselamatan** (Safety), **Lain-lain** (Other).
+  - Collapsible filter panel with active filter indicator.
 - **Status Tracking**: Visual indicators for report progress.
 
 ### 🛡️ Admin & Moderation
@@ -30,7 +32,7 @@ A robust, full-stack community issue reporting application built with modern web
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router, Server Actions)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Actions)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Shadcn/UI](https://ui.shadcn.com/)
 - **Backend & Database**: [Supabase](https://supabase.com/) (PostgreSQL, Auth, Realtime, Storage, Edge Functions)
@@ -74,15 +76,27 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## 👮 Admin Access Setup
+## 👮 Admin Access
+
+### How to Access the Admin Panel
+
+The admin panel is accessed through a **hidden shortcut**:
+
+1.  **Double-click** the 🌙/☀️ **theme toggle button** (top-right corner of the navbar).
+2.  This will navigate you to `/admin`.
+3.  You can also navigate directly to `/admin` in your browser URL bar.
+
+> **Note:** Only users with the `admin` role can view the admin dashboard. Non-admin users will be redirected.
+
+### Setting Up Admin Role
 
 Admins are managed via the `profiles` table in the database, **not** via Auth metadata.
 
 1.  Sign up/Log in to the app with the account you want to make an admin.
-2.  Go to your Supabase **Table Editor** -> `public.profiles`.
+2.  Go to your Supabase **Table Editor** → `public.profiles`.
 3.  Find the user's row.
 4.  Change the `role` column from `user` to `admin`.
-5.  Refresh the app. You can now access `/admin`.
+5.  Refresh the app. You now have full admin access.
 
 ## 📦 Deployment
 

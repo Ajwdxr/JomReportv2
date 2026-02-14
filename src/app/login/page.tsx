@@ -1,4 +1,5 @@
 import { GoogleLoginButton } from "@/components/auth/google-login-button"
+import { EmailLoginForm } from "@/components/auth/email-login-form"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
@@ -37,10 +38,12 @@ export default function LoginPage() {
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                         <span className="bg-white dark:bg-[#0f172a] px-2 text-slate-500 dark:text-gray-400">
-                            Atau
+                            Atau log masuk dengan email
                         </span>
                     </div>
                 </div>
+
+                <EmailLoginForm />
 
                 <div className="text-center text-xs text-slate-500 dark:text-gray-400">
                     Dengan meneruskan, anda bersetuju dengan <a href="#" className="underline hover:text-slate-900 dark:hover:text-white">Terma Perkhidmatan</a> dan <a href="#" className="underline hover:text-slate-900 dark:hover:text-white">Polisi Privasi</a> kami.
