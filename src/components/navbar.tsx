@@ -9,11 +9,19 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { Badge } from "@/components/ui/badge"
 
 export async function Navbar() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null
+  let supabase = null
+
+  try {
+    supabase = await createClient()
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch (error) {
+    console.warn("Supabase client initialization failed (likely due to missing env vars during build):", error)
+  }
   
   let points = 0
-  if (user) {
+  if (user && supabase) {
     const { data: profile } = await supabase
         .from("profiles")
         .select("points")
